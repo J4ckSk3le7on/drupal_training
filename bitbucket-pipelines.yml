@@ -1,0 +1,46 @@
+image: juampynr/drupal9ci:latest
+
+pipelines:
+  pull-requests:
+    '{feature/*,fix/*}':
+      - parallel:
+          - step:
+              name: Coding Standards
+              script:
+                - composer self-update --2
+                - robo ci:build
+                - robo phpcs
+                - robo analyse
+          - step:
+              name: Unit/Kernel tests
+              services:
+                - mariadb
+              script:
+                - sleep 10
+                - robo ci:build
+                - robo ci:unit-tests
+          - step:
+              name: Behat
+              services:
+                - mariadb
+              script:
+                - apt-get update
+                - apt-get install --yes wget
+                - wget --user=$HTUSER --password=$HTPASS https://drupal10-starter.dev.agileana.com/sites/default/files/behat-db.jpg
+                - mv behat-db.jpg behat-db.sql.gz
+                - gunzip behat-db.sql.gz
+                - robo ci:build
+                - robo ci:serve-drupal
+                - robo ci:chrome-headless &
+                - sleep 5
+                - robo ci:behat-tests
+              artifacts:
+                - screenshots/**
+
+definitions:
+  services:
+    mariadb:
+      image: mariadb:latest
+      variables:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: drupal

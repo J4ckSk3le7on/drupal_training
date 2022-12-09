@@ -1,0 +1,17 @@
+# File: omh.site.yml
+dev:
+  host: 172.104.211.92
+  user: ubuntu
+  root: /mnt/attached_volume_1/webfiles/drupal10_starter/drupal
+  uri: https://drupal10-starter.dev.agileana.com
+  ssh:
+    options: '-p 8722'
+  paths:
+    drush-script: '/home/ubuntu/.config/composer/vendor/bin/drush'
+    files: 'web/sites/default/files'
+local-behat:
+  root: /app/web
+  uri: http://appserver:80
+ci-behat:
+  root: /opt/atlassian/pipelines/agent/build/web
+  uri: http://localhost

@@ -1,0 +1,53 @@
+name: drupal10-starter
+recipe: drupal10
+config:
+  webroot: web
+  xdebug: false
+  composer_version: 2-latest
+  composer:
+    consolidation/robo: ^4
+services:
+  appserver:
+    build:
+      - mkdir -p $LANDO_WEBROOT/sites/simpletest/browser_output
+    run_as_root:
+      - apt-get update
+      - curl -sL https://deb.nodesource.com/setup_14.x | bash -
+      - apt-get install -y nodejs
+      - npm install gulp-cli gulp -g
+    overrides:
+      environment:
+        SIMPLETEST_BASE_URL: 'http://omh.local.dev'
+        SIMPLETEST_DB: 'mysql://drupal10:drupal10@database/drupal10'
+        MINK_DRIVER_ARGS_WEBDRIVER: '["chrome", { "chromeOptions": { "args": [ "disable-gpu", "headless", "no-sandbox", "window-size=1200,700" ] } }, "http://chrome:4444"]'
+        BROWSERTEST_OUTPUT_DIRECTORY: /app/web/sites/simpletest/browser_output
+        SYMFONY_DEPRECATIONS_HELPER: 'disabled'
+  chrome:
+    type: compose
+    services:
+      image: seleniarm/standalone-chromium:101
+      command: /opt/bin/entry_point.sh
+  mail:
+    type: mailhog
+    hogfrom:
+      - appserver
+tooling:
+  phpunit:
+    service: appserver
+    description: Run PHPUnit tests including browser and javascript tests
+    cmd: "phpunit -c /app/web/core/phpunit.xml.dist"
+  robo:
+    service: appserver
+    description: Runs <robo> commmands
+    cmd: /var/www/.composer/vendor/bin/robo
+  behat:
+    service: appserver
+    cmd: vendor/bin/behat -c /app/tests/behat.yml
+  npm:
+    service: appserver
+  node:
+    service: appserver
+  drush:
+    cmd: /app/vendor/bin/drush
+env_file:
+  - .lando.env

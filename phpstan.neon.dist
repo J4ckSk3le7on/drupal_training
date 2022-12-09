@@ -1,0 +1,21 @@
+includes:
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+parameters:
+  level: 5
+  parallel:
+    processTimeout: 120.0
+  paths:
+    - web/modules/custom
+    - web/themes/custom
+  exceptions:
+    check:
+      missingCheckedExceptionInThrows: true
+      tooWideThrowType: true
+  ignoreErrors:
+    - '#Unsafe usage of new static\(\)#'
+    - '#Yield can be used only with these return types: Generator, Iterator, Traversable, iterable.#'
+  reportUnmatchedIgnoredErrors: false
+  treatPhpDocTypesAsCertain: false
+  excludePaths:
+    analyse:
+      - */tests/src/*

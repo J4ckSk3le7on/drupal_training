@@ -1,0 +1,64 @@
+default:
+  suites:
+    default:
+      contexts:
+        - FeatureContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - DrevOps\BehatScreenshotExtension\Context\ScreenshotContext
+  extensions:
+    DrevOps\BehatScreenshotExtension:
+      dir: /app/screenshots
+      fail: true
+      purge: true
+    Drupal\MinkExtension:
+      base_url: http://appserver:80
+      files_path: '/app/tests'
+      selenium2: ~
+      browser_name: chrome
+      default_session: command_line_browser
+      javascript_session: chromium
+      sessions:
+        command_line_browser:
+          browserkit_http: ~
+        chromium:
+          selenium2:
+            wd_host: "http://chrome:4444"
+            capabilities: {
+              "browserName": "chrome",
+              "browser": "chrome",
+              'chrome': {
+                'switches': [
+                  '--no-sandbox',
+                  '--headless',
+                  '--disable-gpu',
+                  '--disable-gpu-sandbox',
+                  '--window-size=1200,1000',
+                  '--disable-extensions',
+                  '--disable-dev-shm-usage'
+                ]
+              },
+              "marionette": true
+            }
+            browser: chrome
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: 'drupal'
+      drush:
+        alias: 'nara_starter.local-behat'
+      drupal:
+        drupal_root: '/app/web'
+      region_map:
+        header_banner: "section.homepage-hero"
+        footer: ".page__footer"
+        primary_menu: "nav.nara-menu"
+        media_library: ".media-library-widget-modal .ui-dialog-buttonpane .ui-dialog-buttonset"
+        drupal_modal: "#drupal-modal"
+        modal_dialog: ".ui-dialog"
+        modal_dialog_buttons: ".ui-dialog .ui-dialog-buttonpane"
+      selectors:
+        message_selector: '.alert,.messages-list'
+        error_message_selector: '.alert.alert-danger,.messages-list__item.messages--error'
+        success_message_selector: '.alert.alert-success,.messages-list__item.messages--status'

@@ -1,0 +1,48 @@
+default:
+  suites:
+    default:
+      contexts:
+        - FeatureContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - DrevOps\BehatScreenshotExtension\Context\ScreenshotContext
+  extensions:
+    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
+    DrevOps\BehatScreenshotExtension:
+      dir: /opt/atlassian/pipelines/agent/build/screenshots
+      fail: true
+      purge: true
+    Drupal\MinkExtension:
+      goutte: ~
+      base_url: http://localhost
+      files_path: '/opt/atlassian/pipelines/agent/build/tests'
+      selenium2: ~
+      browser_name: chrome
+      default_session: chromium
+      javascript_session: chromium
+      sessions:
+        chromium:
+          chrome:
+            api_url: http://localhost:9222
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: 'drupal'
+      drush:
+        alias: 'nara_civics.ci-behat'
+        binary: '../vendor/bin/drush'
+      drupal:
+        drupal_root: '/opt/atlassian/pipelines/agent/build/web'
+      region_map:
+        header_banner: "section.homepage-hero"
+        footer: ".page__footer"
+        primary_menu: "nav.nara-menu"
+        media_library: ".media-library-widget-modal .ui-dialog-buttonpane .ui-dialog-buttonset"
+        drupal_modal: "#drupal-modal"
+        modal_dialog: ".ui-dialog"
+        modal_dialog_buttons: ".ui-dialog .ui-dialog-buttonpane"
+      selectors:
+        message_selector: '.alert,.messages-list'
+        error_message_selector: '.alert.alert-danger,.messages-list__item.messages--error'
+        success_message_selector: '.alert.alert-success,.messages-list__item.messages--status'
