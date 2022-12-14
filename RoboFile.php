@@ -395,6 +395,7 @@ class RoboFile extends Tasks {
     // Renaming files and replacing names.
     $tasks[] =  $this->taskExec("sed -i 's/drupal10_starter/" . $site_name . "/g' drush/sites/" . $site_name . ".site.yml");
     $tasks[] =  $this->taskExec("sed -i 's/drupal10_starter/" . $site_name . "/g' tests/behat.yml");
+    $tasks[] =  $this->taskExec("sed -i 's/drupal10_starter/" . $site_name . "/g' .bitbucket/config/behat.yml");
     $tasks[] =  $this->taskExec("sed -i 's/drupal10-starter/" . str_replace('_', '-', $site_name) . "/g' drush/sites/" . $site_name . ".site.yml");
     $tasks[] =  $this->taskExec("sed -i 's/drupal10-starter/" . str_replace('_', '-', $site_name) . "/g' bitbucket-pipelines.yml");
     return $tasks;

@@ -47,13 +47,13 @@ default:
       blackbox: ~
       api_driver: 'drupal'
       drush:
-        alias: 'nara_starter.local-behat'
+        alias: 'drupal10_starter.local-behat'
       drupal:
         drupal_root: '/app/web'
       region_map:
         header_banner: "section.homepage-hero"
         footer: ".page__footer"
-        primary_menu: "nav.nara-menu"
+        primary_menu: "nav.main-menu"
         media_library: ".media-library-widget-modal .ui-dialog-buttonpane .ui-dialog-buttonset"
         drupal_modal: "#drupal-modal"
         modal_dialog: ".ui-dialog"
