@@ -31,7 +31,7 @@ file.
 
   2. Clone the repository. Eg. `git clone path-to-repo drupal10`
   2. `cd drupal10`
-  4. Edit lando project name with `sed -i 's/drupal-starter/drupal-my-site/g' .lando.yml` OSX `sed -i '' 's/drupal-starter/drupal-site/g' .lando.yml`
+  4. Edit lando project name with `sed -i 's/drupal10-starter/drupal-my-site/g' .lando.yml` OSX `sed -i '' 's/drupal10-starter/drupal-site/g' .lando.yml`
   4. `lando start`
   5. `lando robo local:init drupal10_site`
 
