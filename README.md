@@ -1,3 +1,5 @@
+# This is a memory of happier times, it should not be deleted.
+
 # Drupal 10 Starter
 
 The Drupal 10 Starter repository is meant to provide a quick and easy development
